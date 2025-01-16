@@ -10,24 +10,25 @@ on:
     - cron: "0 0 * * *"  # Run model training every day at midnight
 
 jobs:
-  feature_extraction:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'  # or the Python version you're using
+        
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.x
+    - name: Run feature extraction script
+      run: python feature_extraction.py
 
-      - name: Install dependencies
-        run: |
-          pip install pandas scikit-learn hopsworks
-
-      - name: Run feature extraction script
-        run: |
-          python feature_extraction.py
 
   model_training:
     runs-on: ubuntu-latest
