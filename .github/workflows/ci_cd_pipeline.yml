@@ -12,22 +12,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.12'  # or the Python version you're using
-        
+        python-version: '3.12'
+
     - name: Install dependencies
       run: |
-        pip install --upgrade pip
         pip install -r requirements.txt
+        pip install pyarrow  # Ensure pyarrow is installed
+        pip install hopsworks[python]  # Install Hopsworks with Python dependencies, including Apache Arrow
 
-    - name: Run feature extraction script
-      run: python feature_extraction.py
+    - name: Run training script
+      run: |
+        python train_model.py
 
 
   model_training:
