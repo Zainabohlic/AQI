@@ -10,8 +10,11 @@ on:
     - cron: "0 0 * * *"  # Run model training every day at midnight
 
 jobs:
-  build:
+  pipeline:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        script: [ "feature_extraction.py", "train_model.py" ]
 
     steps:
     - name: Checkout code
@@ -28,26 +31,6 @@ jobs:
         pip install pyarrow  # Ensure pyarrow is installed
         pip install hopsworks[python]  # Install Hopsworks with Python dependencies, including Apache Arrow
 
-    - name: Run training script
+    - name: Run the appropriate script
       run: |
-        python train_model.py
-
-
-  model_training:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.x
-
-      - name: Install dependencies
-        run: |
-          pip install pandas scikit-learn hopsworks
-
-      - name: Run training script
-        run: |
-          python train_model.py
+        python ${{ matrix.script }}

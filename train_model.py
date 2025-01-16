@@ -12,8 +12,8 @@ project = hopsworks.login(api_key_value="Jc6KapH8rIxyGs3y.OHbQCJktzLQVPtSRiVPUiM
 feature_store = project.get_feature_store()
 aqi_fg = feature_store.get_feature_group(name="aqi_data", version=1)
 
-# Load the CSV or feature group data
-df = pd.read_csv("/Users/zainabaslam/Local Docs/10Pearls/processed_aqi_weather_data.csv")
+# Fetch data from feature group
+df = aqi_fg.read()
 
 # Preprocessing (as in your original code)
 df['date'] = pd.to_datetime(df['date'])
