@@ -2,4 +2,5 @@ hopsworks
 pandas
 scikit-learn
 numpy
+hopsworks[python]
 pyarrow
